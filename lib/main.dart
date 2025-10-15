@@ -1,40 +1,45 @@
+/// Import Flutter
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+/// Import Packages
+import 'fluro_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+/// Import Layers
+import 'package:business_layer/business_layer.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(),
+/// Import widgets
+import 'pages/main_page.dart';
+
+/// Function for preload SVG files
+Future<void> preloadSVGs(List<String> assetPaths) async {
+  for (final path in assetPaths) {
+    final loader = SvgAssetLoader(path);
+    await svg.cache.putIfAbsent(
+      loader.cacheKey(null),
+      () => loader.loadBytes(null),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Rick & Morty World'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Rick & Morty'),
-          ],
-        ),
-      ),
-    );
-  }
+  await preloadSVGs([
+    'assets/system/svg/logo.svg',
+    // << - Type here all svg assets for cache it
+  ]);
+
+  MyFluroRouter.setupRouter();        // Initialize Fluro Router Navigator
+  await setupServices();              // Initialize Dependency Injection Services (Locator)
+
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (_) => ThemeBloc()),
+      BlocProvider(create: (_) => AppBloc()),
+      // << - Type here all BloC states
+    ],
+    child: const MainPage(),
+  ));
 }
