@@ -10,7 +10,7 @@ import 'package:design_layer/design_layer.dart';
 
 /// Import Localizations
 import '../l10n/l10n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 /// Import Navigation
@@ -22,24 +22,24 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, DefaultTheme>(
-      builder: (BuildContext ctx, DefaultTheme state) {
-        return MaterialApp(
-          title: 'Template Application',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          themeMode: locator.get<ThemeController>().get(),
-          supportedLocales: L10n.all,
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          initialRoute: '/',
-          onGenerateRoute: MyFluroRouter.router.generator,
-        );
-      },
+        builder: (BuildContext ctx, DefaultTheme theme) {
+          return MaterialApp(
+            title: 'RickAndMorty',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: locator.get<ThemeController>().get(),
+            supportedLocales: L10n.all,
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            initialRoute: '/',
+            onGenerateRoute: MyFluroRouter.router.generator,
+          );
+        }
     );
   }
 }

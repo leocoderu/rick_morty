@@ -1,21 +1,13 @@
 {
     "language": "Русский",
-    "home_title": "Шаблонное приложение",
+    "home_title": "Рик и Морти",
     "home_text": "Нажимайте кнопки внизу для изменения счетчика",
     "home_btInc_tooltip": "Увеличить",
     "home_btDec_tooltip": "Уменьшить",
 
-    "settings_title": "Страница настроек",
+    "settings_title": "Настройки",
     "settings_swSystemTheme_title": "Системная тема",
     "settings_swSystemTheme_subtitle": "Вкл / Выкл Системной темы",
     "settings_swDarkTheme_title": "Тёмная тема",
-    "settings_swDarkTheme_subtitle": "Вкл / Выкл Тёмной темы",
-    "settings_swAuthLocal_title": "Локальная Авторизация",
-    "settings_swAuthLocal_subtitle": "Использовать локальную авторизацию",
-    "settings_swAutoLogin_title": "Автоматический вход",
-    "settings_swAutoLogin_subtitle": "Использовать автоматический вход",
-    "settings_swSecurity_title": "Охрана",
-    "settings_swSecurity_subtitle": "Охранная система",
-    "settings_swON": "ВКЛ",
-    "settings_swOFF": "ВЫКЛ"
+    "settings_swDarkTheme_subtitle": "Вкл / Выкл Тёмной темы"
 }

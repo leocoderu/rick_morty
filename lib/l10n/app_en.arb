@@ -4,7 +4,7 @@
         "description": "The current Language"
     },
 
-    "home_title": "Template Application",
+    "home_title": "Rick & Morty",
     "@home_title": {
         "description": "Name of Application"
     },
@@ -21,7 +21,7 @@
         "description": "Text tooltip for Decrease button"
     },
 
-    "settings_title": "Settings Page",
+    "settings_title": "Settings",
     "@settings_title": {
         "description": "Title of Settings page"
     },
@@ -40,37 +40,5 @@
     "settings_swDarkTheme_subtitle": "On / Off Dark theme",
     "@settings_swDarkTheme_subtitle": {
         "description": "Subtitle of switcher"
-    },
-    "settings_swAuthLocal_title": "Local Authorization",
-    "@settings_swAuthLocal_title": {
-        "description": "Title of switcher"
-    },
-    "settings_swAuthLocal_subtitle": "Use Local Authorization",
-    "@settings_swAuthLocal_subtitle": {
-        "description": "Subtitle of switcher"
-    },
-    "settings_swAutoLogin_title": "Auto Login",
-    "@settings_swAutoLogin_title": {
-        "description": "Title of switcher"
-    },
-    "settings_swAutoLogin_subtitle": "Use Auto Login",
-    "@settings_swAutoLogin_subtitle": {
-        "description": "Subtitle of switcher"
-    },
-    "settings_swSecurity_title": "Security",
-    "@settings_swSecurity_title": {
-        "description": "Title of switcher"
-    },
-    "settings_swSecurity_subtitle": "Security system",
-    "@settings_swSecurity_subtitle": {
-        "description": "Subtitle of switcher"
-    },
-    "settings_swON": "ON",
-    "@settings_swON": {
-        "description": "Title of switcher ON"
-    },
-    "settings_swOFF": "OFF",
-    "@settings_swOFF": {
-        "description": "Title of switcher OFF"
     }
 }
