@@ -10,7 +10,6 @@ import '../../l10n/app_localizations.dart';
 
 /// Import Layers
 import 'package:business_layer/business_layer.dart';
-//import 'package:design_layer/design_layer.dart';
 import 'package:model_layer/model_layer.dart';
 
 /// Import Widgets
@@ -32,6 +31,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int curIndex = 0;
+  List<Character> _characters = CharacterController().getCharactersF();
 
   @override
   void didChangeDependencies() {
@@ -42,33 +42,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final bool orientation = MediaQuery.of(context).orientation == Orientation.portrait;
-
-    final List<Widget> _data = [
-      CharacterCard(
-        url: 'https://i.pinimg.com/736x/a3/b4/41/a3b441e9147a08e482ba526fc05ced5b.jpg',
-        name: 'Sophie Marceau',
-        desc: 'France Actress, Supermodel, Beauty',
-      ),
-      CharacterCard(
-        url: 'https://i.pinimg.com/originals/53/db/27/53db27a974946b37e75ec23305eac5a2.jpg',
-        name: 'Reese Witherspoon',
-        desc: 'USA Actress, Supermodel, Very Beauty',
-      ),
-      CharacterCard(
-        url: 'https://i.pinimg.com/736x/a3/b4/41/a3b441e9147a08e482ba526fc05ced5b.jpg',
-        name: 'Sophie Marceau',
-        desc: 'France Actress, Supermodel, Beauty',
-      ),
-      CharacterCard(
-        url: 'https://i.pinimg.com/originals/53/db/27/53db27a974946b37e75ec23305eac5a2.jpg',
-        name: 'Reese Witherspoon',
-        desc: 'USA Actress, Supermodel, Very Beauty',
-      ),
-      CharacterCard(),
-      CharacterCard(),
-      CharacterCard(),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () => exit(0), icon: Icon(Icons.exit_to_app_rounded)),
@@ -86,14 +59,11 @@ class _HomePageState extends State<HomePage> {
         builder: (_, AppState state) {
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //crossAxisCount: orientation ? 1 : 4,
-                  //childAspectRatio: 0.65,
-
               crossAxisCount: orientation ? 2 : 4,
               childAspectRatio: 0.53,
             ),
-            itemCount: _data.length,
-            itemBuilder: (context, index) => _data[index],
+            itemCount: _characters.length,
+            itemBuilder: (context, index) => CharacterCard(character: _characters[index]),
           );
         },
       ),

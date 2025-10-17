@@ -7,13 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// Import Layers
 import 'package:business_layer/business_layer.dart';
 import 'package:design_layer/design_layer.dart';
+import 'package:model_layer/model_layer.dart';
 
 class CharacterCard extends StatelessWidget {
-  const CharacterCard({super.key, this.url, this.name, this.desc, this.onLike});
+  const CharacterCard({super.key, required this.character, this.onLike});
 
-  final String? url;
-  final String? name;
-  final String? desc;
+  final Character character;
   final VoidCallback? onLike;
 
   @override
@@ -30,12 +29,9 @@ class CharacterCard extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: theme.shadowColor!,
-                  blurRadius: 7.0, // soften the shadow
-                  spreadRadius: 0.0, //extend the shadow
-                  offset: Offset(
-                    7.0, // Move to right 5  horizontally
-                    7.0, // Move to bottom 5 Vertically
-                  ),
+                  blurRadius: 7.0,
+                  spreadRadius: 0.0,
+                  offset: Offset(7.0, 7.0),
                 )
               ],
             ),
@@ -51,9 +47,9 @@ class CharacterCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        url != null ? Image.network(url!) : Image.asset('assets/system/images/no_photo.jpg'),
-                        Text(name != null ? name! : 'No Name', style: TextStyle(fontSize: 18, color: theme.mainColor300),textAlign: TextAlign.center,),
-                        Text(desc != null ? desc! : '', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
+                        Image.network(character.image),
+                        Text(character.name, style: TextStyle(fontSize: 18, color: theme.mainColor300),textAlign: TextAlign.center,),
+                        Text(character.type, style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
                       ],
                     ),
                   )
