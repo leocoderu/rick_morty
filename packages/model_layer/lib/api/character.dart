@@ -1,3 +1,4 @@
+/// Classes
 import 'package:model_layer/api/location.dart';
 import 'package:model_layer/api/origin.dart';
 
@@ -14,6 +15,7 @@ class Character {
   List<String> episode;
   String url;
   String created;
+  bool favourite;
 
   Character({
     required this.id,
@@ -27,23 +29,25 @@ class Character {
     required this.image,
     required this.episode,
     required this.url,
-    required this.created
+    required this.created,
+    required this.favourite
   });
 
   factory Character.fromJson(Map<String, dynamic> json) =>
       Character(
-        id: json["id"],
-        name: json["name"],
+        id: json["id"] as int,
+        name: json["name"] as String,
         status: json["status"],
         species: json["species"],
         type: json["type"],
         gender: json["gender"],
-        origin: json["origin"],
-        location: json["location"],
+        origin: Origin.fromJson(json["origin"]),
+        location: Location.fromJson(json["location"]),
         image: json["image"],
-        episode: json["episode"],
+        episode: List<String>.from(json["episode"]),
         url: json["url"],
-        created: json["created"]
+        created: json["created"],
+        favourite: false
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,6 +62,7 @@ class Character {
     "image": image,
     "episode": episode,
     "url": url,
-    "created": created
+    "created": created,
+    "favourite": favourite
   };
 }

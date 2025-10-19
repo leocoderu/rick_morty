@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 Future<void> requestCharacters(({int? page, SendPort sendPort}) data) async {
   CharacterList? characters;
+  //List<Character>? characters;
 
   String api = 'https://rickandmortyapi.com/api/character';
 
@@ -19,12 +20,13 @@ Future<void> requestCharacters(({int? page, SendPort sendPort}) data) async {
       : await http.get(Uri.parse(api));
   try {
     if (characterResponse.statusCode == 200) {
+      //characters = CharacterList.fromJson(json.decode(characterResponse.body)).results;
       characters = CharacterList.fromJson(json.decode(characterResponse.body));
     } else {
       debugPrint('error: ${characterResponse.statusCode}');
     }
   } catch (e) {
-    debugPrint(e.toString());
+    debugPrint('API error: ${e.toString()}');
   }
   data.sendPort.send(characters);
 }

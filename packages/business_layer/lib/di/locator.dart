@@ -1,5 +1,4 @@
 /// Import Packages
-import 'package:business_layer/controller/character_controller.dart';
 import 'package:get_it/get_it.dart';
 
 /// Import Layers
@@ -16,7 +15,6 @@ Future<void> setupServices() async {
     ..registerSingleton<ThemeDataCustom>(ThemeDataCustom())
 
     ..registerSingleton<CharacterController>(CharacterController())
-    ..registerSingleton<CharacterRepoLocal>(CharacterRepoLocal())
     ..registerSingleton<CharacterRepo>(CharacterRepo());
 
   await locator.get<ThemeController>().init();    // Hive initialization

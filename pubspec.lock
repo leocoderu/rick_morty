@@ -416,14 +416,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.6"
-  triple_switch:
-    dependency: transitive
-    description:
-      name: triple_switch
-      sha256: "3cac47e55f9f89d8c017aad5e278cb35fc63b3730fe02fc2c2f3c2715eef5f29"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.4"
   typed_data:
     dependency: transitive
     description:

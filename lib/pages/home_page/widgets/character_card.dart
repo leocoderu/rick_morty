@@ -21,7 +21,7 @@ class CharacterCard extends StatelessWidget {
         builder: (BuildContext ctx, DefaultTheme theme) {
           return Container(
             margin: EdgeInsets.all(10.0),
-            width: 100,
+            //width: 70,
 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
@@ -42,10 +42,10 @@ class CharacterCard extends StatelessWidget {
                   padding: EdgeInsets.all(20.0),
                   child: Container(
                     //width: 350,
-                    //height: 600,
+                    //height: 200,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.network(character.image),
                         Text(character.name, style: TextStyle(fontSize: 18, color: theme.mainColor300),textAlign: TextAlign.center,),
@@ -58,8 +58,8 @@ class CharacterCard extends StatelessWidget {
                   left: 110.0,
                   top: 0.0,
                   child: IconButton(
-                    icon: Icon(Icons.favorite_border, size: 50, color: theme.redColor200,),
-                    onPressed: () => onLike,
+                    icon: Icon(character.favourite ? Icons.star : Icons.star_border, size: 50, color: theme.redColor200,),
+                    onPressed: onLike,
                   ),
                 ),
               ],
