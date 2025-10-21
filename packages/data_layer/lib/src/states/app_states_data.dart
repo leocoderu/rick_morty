@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:model_layer/model_layer.dart';
 
 class AppStateData {
-  static const String boxName = 'template_box';
+  static const String boxName = 'rickmorty_box';
   static const String keyAppState = 'app_state';
 
   const AppStateData();

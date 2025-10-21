@@ -3,34 +3,34 @@ import 'package:model_layer/api/location.dart';
 import 'package:model_layer/api/origin.dart';
 
 class Character {
-  int id;
-  String name;
-  String status;
-  String species;
-  String type;
-  String gender;
-  Origin origin;
-  Location location;
-  String image;
-  List<String> episode;
-  String url;
-  String created;
-  bool favourite;
+  int? id;
+  String? name;
+  String? status;
+  String? species;
+  String? type;
+  String? gender;
+  Origin? origin;
+  Location? location;
+  String? image;
+  List<String>? episode;
+  String? url;
+  String? created;
+  bool? favourite;
 
   Character({
-    required this.id,
-    required this.name,
-    required this.status,
-    required this.species,
-    required this.type,
-    required this.gender,
-    required this.origin,
-    required this.location,
-    required this.image,
-    required this.episode,
-    required this.url,
-    required this.created,
-    required this.favourite
+    this.id,
+    this.name,
+    this.status,
+    this.species,
+    this.type,
+    this.gender,
+    this.origin,
+    this.location,
+    this.image,
+    this.episode,
+    this.url,
+    this.created,
+    this.favourite
   });
 
   factory Character.fromJson(Map<String, dynamic> json) =>

@@ -1,8 +1,8 @@
 class Origin {
-  String name;
-  String url;
+  String? name;
+  String? url;
 
-  Origin({required this.name, required this.url});
+  Origin({this.name, this.url});
 
   factory Origin.fromJson(Map<String, dynamic> json) =>
       Origin(name: json["name"], url: json["url"]);

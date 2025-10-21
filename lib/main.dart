@@ -1,5 +1,6 @@
 /// Import Flutter
 import 'package:flutter/material.dart';
+import 'package:rick_morty/example.dart';
 
 /// Import Packages
 import 'fluro_router.dart';
@@ -34,12 +35,14 @@ void main() async {
   MyFluroRouter.setupRouter();        // Initialize Fluro Router Navigator
   await setupServices();              // Initialize Dependency Injection Services (Locator)
 
-  runApp(MultiBlocProvider(
+   runApp(
+  MultiBlocProvider(
     providers: [
       BlocProvider(create: (_) => ThemeBloc()),
       BlocProvider(create: (_) => AppBloc()),
       // << - Type here all BloC states
     ],
     child: const MainPage(),
+    //child: const Example()
   ));
 }

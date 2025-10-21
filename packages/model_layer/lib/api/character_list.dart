@@ -3,8 +3,8 @@ import 'package:model_layer/api/character.dart';
 import 'package:model_layer/api/info.dart';
 
 class CharacterList {
-  Info info;
-  List<Character> results;
+  Info? info;
+  List<Character>? results;
 
   CharacterList({required this.info, required this.results});
 

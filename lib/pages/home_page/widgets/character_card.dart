@@ -47,9 +47,12 @@ class CharacterCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.network(character.image),
-                        Text(character.name, style: TextStyle(fontSize: 18, color: theme.mainColor300),textAlign: TextAlign.center,),
-                        Text(character.type, style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
+                        (character.image != null ) ? Image.network(character.image!) : Image.asset('assets/system/images/no_photo.jpg'),
+                        Text(character.name ?? 'No Name', style: TextStyle(fontSize: 18, color: theme.mainColor300),textAlign: TextAlign.center,),
+                        Text('State: ${character.status}', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
+                        Text('Species: ${character.species}', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
+                        Text('Type: ${character.type == '' ? 'Unknown': character.type}', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
+                        Text('Gender: ${character.gender}', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
                       ],
                     ),
                   )
@@ -58,7 +61,7 @@ class CharacterCard extends StatelessWidget {
                   left: 110.0,
                   top: 0.0,
                   child: IconButton(
-                    icon: Icon(character.favourite ? Icons.star : Icons.star_border, size: 50, color: theme.redColor200,),
+                    icon: Icon((character.favourite ?? false) ? Icons.star : Icons.star_border, size: 50, color: theme.redColor200,),
                     onPressed: onLike,
                   ),
                 ),

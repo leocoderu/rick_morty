@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   CharacterList? characters;
   //List<Character>? characters;
   int? _page;
+  List<Favourite> favourites = [];
 
   void _initListener() =>
     receivePort.listen((data) => setState(() {
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
         characters = data;                          // Заполнить
       } else {
         characters!.info = data.info;               // Переписать
-        characters!.results.addAll(data.results);   // Дописать
+        characters!.results!.addAll(data.results);   // Дописать
       }
       _isLoadingMore = false;
     }));
@@ -73,31 +74,41 @@ class _HomePageState extends State<HomePage> {
           if (_page == null) {
             _page = 2;
           } else {
-            if (_page! <= characters!.info.pages!) {
+            if (_page! <= characters!.info!.pages!) {
               _page = _page! + 1;
             }
           }
 
         });
         //print(page);
-        if (_page! <= characters!.info.pages!) {
+        if (_page! <= characters!.info!.pages!) {
           _getCharacters(_page);
         }
       }
     });
   }
 
-  void onLike(int index) {
+  void onLike(int? id) {
     setState(() {
-      characters!.results[index].favourite = !characters!.results[index].favourite;
+      characters!.results!.where((e) => e.id == id).first.favourite =
+        !(characters!.results!.where((e) => e.id == id).first.favourite ?? false);
+
+      if (characters!.results!.where((e) => e.id == id).first.favourite ?? false)
+        locator.get<CharacterController>().addFavourites(characters!.results!.where((e) => e.id == id).first);
+        //: locator.get<CharacterController>().delFavourites(characters!.results!.where((e) => e.id == id).first);
     });
   }
+
+  Future<void> _getFavourites() async => await locator.get<CharacterController>().getFavourites();
+
+  void clearFav() => locator.get<CharacterController>().clearBox();
 
   @override
   void initState() {
     _initListener();
     _getCharacters(_page);
     _listenerScroll();
+    _getFavourites();
 
     super.initState();
   }
@@ -129,9 +140,8 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(Icons.exit_to_app_rounded)),
               flexibleSpace: LinearProgressIndicator(
                 value: (characters == null) ? 0
-                    : (characters!.results.length) /
-                        ((characters!.info.count == null) ? 1 : characters!.info
-                          .count!),
+                    : (characters!.results!.length) /
+                        ((characters!.info!.count == null) ? 1 : characters!.info!.count!),
                 //: //((_curIndex == 0)
                 //    (_scrollController.position.pixels
                 //     / (_scrollController.position.maxScrollExtent
@@ -147,14 +157,17 @@ class _HomePageState extends State<HomePage> {
                 minHeight: double.infinity,
               ),
               //backgroundColor: Colors.red,
-              //title:
               title: Text(AppLocalizations.of(context)!.home_title),
               centerTitle: true,
               actions: [
                 IconButton(
-                  icon: Icon(Icons.run_circle_outlined),
-                  onPressed: () {},
+                  icon: Icon(Icons.delete_forever),
+                  onPressed: () => clearFav(),
                 ),
+                // IconButton(
+                //   icon: Icon(Icons.run_circle_outlined),
+                //   onPressed: () => _getFavourites(),
+                // ),
                 IconButton(
                   icon: Icon(Icons.settings_rounded),
                   onPressed: () =>
@@ -174,16 +187,32 @@ class _HomePageState extends State<HomePage> {
                         childAspectRatio: orientation ? 0.60 : 0.70,
                       ),
                       itemCount: (_curIndex == 0)
-                        ? characters!.results.length
-                        : characters!.results.where((e) => e.favourite == true).length,
+                        ? characters!.results!.length
+                        : favourites.length,
+                        //: characters!.results.where((e) => e.favourite == true).length,
                       itemBuilder: (context, index) {
                         if (_curIndex == 0) {
-                          return CharacterCard(character: characters!.results[index],
-                            onLike: () {onLike(index);});
+                          return CharacterCard(
+                            character: characters!.results![index],
+                            onLike: () {onLike(characters!.results![index].id);}
+                          );
                         }
                         return CharacterCard(
-                            character: characters!.results.where((e) => e.favourite).toList()[index],
-                            onLike: () => onLike(index)
+                          character: Character(
+                              id: favourites[index].id,
+                              name: favourites[index].name,
+                              status: favourites[index].status,
+                              species: favourites[index].species,
+                              type: favourites[index].type,
+                              gender: favourites[index].gender,
+                              origin: null,
+                              location: null,
+                              image: favourites[index].image,
+                              episode: favourites[index].episode,
+                              url: favourites[index].url,
+                              created: favourites[index].created,
+                              favourite: true),
+                            onLike: () {onLike(favourites[index].id);}
                         );
                       }
                     //itemBuilder: (context, index) => CharacterCard(character: characters![index]),

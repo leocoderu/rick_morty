@@ -4,7 +4,7 @@ class Info {
   String? next;
   String? prev;
 
-  Info({required this.count, required this.pages, required this.next, required this.prev});
+  Info({this.count, this.pages, this.next, this.prev});
 
   factory Info.fromJson(Map<String, dynamic> json) =>
     Info(
