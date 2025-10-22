@@ -16,7 +16,7 @@ Future<void> setupServices() async {
 
     ..registerSingleton<CharacterController>(CharacterController())
     ..registerSingleton<CharacterRepo>(CharacterRepo())
-    ..registerSingleton<FavStateData>(FavStateData());
+    ..registerSingleton<FavouritesData>(FavouritesData());
 
   await locator.get<ThemeController>().init();    // Hive initialization
   await locator.get<AppStateController>().init(); // Hive initialization

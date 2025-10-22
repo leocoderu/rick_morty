@@ -1,6 +1,5 @@
 /// Import Flutter
 import 'package:flutter/material.dart';
-import 'package:rick_morty/example.dart';
 
 /// Import Packages
 import 'fluro_router.dart';

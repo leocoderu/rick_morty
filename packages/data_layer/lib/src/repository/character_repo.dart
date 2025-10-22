@@ -21,7 +21,7 @@ Future<void> requestCharacters(({int? page, SendPort sendPort}) data) async {
     if (characterResponse.statusCode == 200) {
       characters = CharacterList.fromJson(json.decode(characterResponse.body));
     } else {
-      debugPrint('error: ${characterResponse.statusCode}');
+      debugPrint('Request error: ${characterResponse.statusCode}');
     }
   } catch (e) {
     debugPrint('API error: ${e.toString()}');
