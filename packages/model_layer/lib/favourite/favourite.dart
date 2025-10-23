@@ -92,7 +92,7 @@ class Favourite extends HiveObject {
 
   @override
   String toString() =>
-      'FavState(id: $id, '
+      'Favourites(id: $id, '
           'name: $name, '
           'status: $status, '
           'species: $species, '

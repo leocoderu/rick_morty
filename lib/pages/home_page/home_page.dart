@@ -6,6 +6,7 @@ import 'dart:isolate';
 
 /// Import Packages
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_morty/pages/home_page/widgets/app_progress_bar.dart';
 
 /// Import Localizations
 import '../../l10n/app_localizations.dart';
@@ -48,7 +49,6 @@ class _HomePageState extends State<HomePage> {
         favourites.forEach((f) {
           if (e.id == f.id) {
             e.favourite = true;
-            //print('fav exist!');
           }
         });
       });
@@ -70,9 +70,9 @@ class _HomePageState extends State<HomePage> {
     }));
 
   // Запускаем изолят загрузка из API элементов
-  void _getCharacters(int? page) async {
+  void _getCharacters(int? page) async =>
     await locator.get<CharacterController>().getCharacters(page, receivePort);
-  }
+
 
   void _listenerScroll() {
     _scrollControllerCharacters.addListener(() {
@@ -102,34 +102,42 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onLike(int? id) {
+    Character character = characters!.results!.firstWhere((e) => e.id == id);
+    int index = characters!.results!.indexOf(character);
+    character.favourite = !(character.favourite ?? false);
+
     setState(() {
-      // Меняем состояние поля favorite в общем списке если в этом списке есть этот объект
-      // if (characters!.results!.contains(characters!.results!.where((e) => e.id == id).first)) {
-      //   characters!.results!.where((e) => e.id == id).first.favourite =
-      //   !(characters!.results!.where((e) => e.id == id).first.favourite ?? false);
-      // }
+      characters!.results![index] = character;
 
+      //либо добавляем либо удаляем элемент в Favourites
+      (characters!.results!.where((e) => e.id == id).first.favourite ?? false)
+          ? locator.get<CharacterController>().addFavourites(character)
+          : locator.get<CharacterController>().delFavourites(favourites.firstWhere((e) => e.id == id));
 
-      if(_curIndex != 0) {
-        // Если это страница Favourites а не общий список, удаляем элемент
-        locator.get<CharacterController>().delFavourites(favourites.where((e) => e.id == id).first);
-      } else {
-        // Если это общий список, то либо добавляем либо удаляем элемент в Favourites
-        (characters!.results!.where((e) => e.id == id).first.favourite ?? false)
-          ? locator.get<CharacterController>().addFavourites(
-            characters!.results!.where((e) => e.id == id).first)
-          : locator.get<CharacterController>().delFavourites(
-            favourites.where((e) => e.id == id).first);
-          //: locator.get<CharacterController>().delFavourites(
-          //characters!.results!.where((e) => e.id == id).first);
-      }
       _getFavourites();
     });
   }
 
-  void _getFavourites() async {
-      favourites = await locator.get<CharacterController>().getFavourites();
+  void onUnLike(int? id) {
+    try {
+      Character character = characters!.results!.firstWhere((e) => e.id == id);
+      int index = characters!.results!.indexOf(character);
+      character.favourite = !(character.favourite ?? false);
+      setState(() {
+        characters!.results![index] = character;
+      });
+    } catch (e) {
+      // No Element in Full List
+    }
+
+    setState(() {
+      locator.get<CharacterController>().delFavourites(favourites.where((e) => e.id == id).first);
+      _getFavourites();
+    });
   }
+
+  void _getFavourites() async =>
+      favourites = await locator.get<CharacterController>().getFavourites();
 
   void clearFav() => locator.get<CharacterController>().clearBox();
 
@@ -170,33 +178,26 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             leading: IconButton(onPressed: () => exit(0),
               icon: Icon(Icons.exit_to_app_rounded)),
-            // flexibleSpace: LinearProgressIndicator(
-            //   value: (_curIndex == 0)
-            //     ? (characters == null) ? 0.0
-            //       : (_scrollControllerCharacters.position.pixels / (_scrollControllerCharacters.position.maxScrollExtent / characters!.results!.length)) / characters!.info!.count!
-            //     : (favourites.length == 0) ? 0.0
-            //       : (_scrollControllerFavourites.position.pixels / (_scrollControllerFavourites.position.maxScrollExtent)),
-            //
-            //   //(characters == null) ? 0
-            //   //      : (characters!.results!.length) /
-            //   //          ((characters!.info!.count == null) ? 1 : characters!.info!.count!),
-            //     //: //((_curIndex == 0)
-            //     //    (_scrollController.position.pixels
-            //     //     / (_scrollController.position.maxScrollExtent
-            //     //         / characters!.results.length))
-            //     //     / characters!.info.count!,
-            //       // : (_scrollController.position.pixels
-            //       //   / (_scrollController.position.maxScrollExtent
-            //       //       / characters!.results.where((e) => e.favourite).length))
-            //       //   / characters!.results.where((e) => e.favourite).length
-            //       //),
-            //   backgroundColor: theme.mainColor500,
-            //   color: theme.mainColor300,
-            //   minHeight: double.infinity,
-            // ),
+              flexibleSpace: AppProgressBar(
+                value: 1.0,
+                foreground: theme.mainColor300,
+                background: theme.mainColor500,
+              ),
             title: Text(AppLocalizations.of(context)!.home_title),
             centerTitle: true,
             actions: [
+              IconButton(
+                icon: Icon(Icons.delete_forever),
+                onPressed: () {clearFav();},
+              ),
+              IconButton(
+                icon: Icon(Icons.print),
+                onPressed: () {
+                  debugPrint('Favourites IDs:');
+                  debugPrint(favourites.toString());
+                  //favourites.forEach((e) => debugPrint(e.id.toString()));
+                },
+              ),
               IconButton(
                 icon: Icon(Icons.settings_rounded),
                 onPressed: () => MyFluroRouter.router.navigateTo(context, '/settings'),
@@ -208,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                 if (_curIndex == 0) {
                   if (characters != null) {
                     return GridView.builder(
-                      key: PageStorageKey('GridCharacters'),  // Уникальный ключ
+                      key: PageStorageKey('GridCharacters'),
 
                       controller: _scrollControllerCharacters,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -227,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   if (characters != null) {
                     return GridView.builder(
-                      key: PageStorageKey('Favourites'),  // Уникальный ключ
+                      key: PageStorageKey('GridFavourites'),
                       controller: _scrollControllerFavourites,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: orientation ? 2 : 4,
@@ -252,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                             favourite: true
                           ),
                           onLike: () {
-                            onLike(favourites[index].id);
+                            onUnLike(favourites[index].id);
                           }
                         );
                       }

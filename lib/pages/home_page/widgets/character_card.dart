@@ -9,11 +9,36 @@ import 'package:business_layer/business_layer.dart';
 import 'package:design_layer/design_layer.dart';
 import 'package:model_layer/model_layer.dart';
 
+import 'load_image.dart';
+
 class CharacterCard extends StatelessWidget {
   const CharacterCard({super.key, required this.character, this.onLike});
 
   final Character character;
   final VoidCallback? onLike;
+
+  // Widget LoadImage(String? path) {
+  //   (character.image != null )
+  //       ? return Image.network(
+  //           character.image!,
+  //           loadingBuilder: (context, child, loadingProgress) {
+  //             if (loadingProgress == null) {
+  //               // Картинка полностью загружена
+  //               return child;
+  //             }
+  //             // Пока грузится — показываем индикатор
+  //             return Center(
+  //               child: CircularProgressIndicator(
+  //                 value: loadingProgress.expectedTotalBytes != null
+  //                     ? loadingProgress.cumulativeBytesLoaded /
+  //                     loadingProgress.expectedTotalBytes!
+  //                     : null,
+  //               ),
+  //             );
+  //           },
+  //         )
+  //       : return Image.asset('assets/system/images/no_photo.jpg'),
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +72,8 @@ class CharacterCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        (character.image != null ) ? Image.network(character.image!) : Image.asset('assets/system/images/no_photo.jpg'),
+                        Expanded(child: LoadImage(path: character.image)),
+
                         Text(character.name ?? 'No Name', style: TextStyle(fontSize: 18, color: theme.mainColor300),textAlign: TextAlign.center,),
                         Text('State: ${character.status}', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),
                         Text('Species: ${character.species}', style:TextStyle(fontSize: 12, color: theme.mainColor500),textAlign: TextAlign.center,),

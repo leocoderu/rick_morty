@@ -6,7 +6,7 @@ import 'package:model_layer/model_layer.dart';
 
 class FavouritesData {
   static const String boxName = 'rickmorty_favourite_box';
-  static const String keyFavState = 'rickmorty_favourite_list';
+  //static const String keyFavState = 'rickmorty_favourite_list';
 
   const FavouritesData();
 
@@ -37,26 +37,23 @@ class FavouritesData {
     return await box.values.toList();  // Get Record from the Box
   }
 
-  //Set Favourites state value to Hive
+  //Add Favourite to Hive
   Future<void> addFavourite(Character character) async {
     final Box<Favourite> box = Hive.box<Favourite>(boxName);    // Get Box with FavState Data type
-    if (box.values.any((element) => element.id == character.id)) {
-      // Объект с таким id уже существует
-      return;
-    } else {
-      await box.add(
-         Favourite(
-           id: character.id,
-           name: character.name,
-           status: character.status,
-           species: character.species,
-           type: character.type,
-           gender: character.gender,
-           image: character.image,
-           episode: character.episode,
-           url: character.url,
-           created: character.created
-         )
+    if (!box.values.any((Favourite favourite) => favourite.id == character.id)) {
+      box.add(
+        Favourite(
+          id: character.id,
+          name: character.name,
+          status: character.status,
+          species: character.species,
+          type: character.type,
+          gender: character.gender,
+          image: character.image,
+          episode: character.episode,
+          url: character.url,
+          created: character.created
+        )
       );
     }
   }

@@ -14,9 +14,9 @@ Future<void> requestCharacters(({int? page, SendPort sendPort}) data) async {
 
   String api = 'https://rickandmortyapi.com/api/character';
 
-  final characterResponse = (data.page != null)
-      ? await http.get(Uri.parse('$api?page=${data.page}'))
-      : await http.get(Uri.parse(api));
+  print('URL: $api${(data.page != null) ? '?page=${data.page}' : ''}');
+  final characterResponse = await http.get(Uri.parse('$api${(data.page != null) ? '?page=${data.page}' : ''}'));
+
   try {
     if (characterResponse.statusCode == 200) {
       characters = CharacterList.fromJson(json.decode(characterResponse.body));
@@ -30,7 +30,6 @@ Future<void> requestCharacters(({int? page, SendPort sendPort}) data) async {
 }
 
 class CharacterRepo {
-  Future<void> getCharacters(int? page, ReceivePort receiverPort) async {
+  Future<void> getCharacters(int? page, ReceivePort receiverPort) async =>
     await Isolate.spawn(requestCharacters, (page: page, sendPort:receiverPort.sendPort));
-  }
 }
